@@ -27,6 +27,25 @@ const inputValidation = (input) => {
 	}
 }
 
+const tryAgain = () => {
+	inquirer.prompt([
+{
+	type: "confirm",
+	message: "Would you like to try again?",
+	name: "confirm",
+	default: true
+}
+		]).then(
+		(inquirerResponse) => {
+			if (inquirerResponse.confirm) {
+			showInventory();
+			} else {
+				console.log("Sorry to hear. Come back soon!");
+				connection.end();
+			}
+		})
+}
+
 const buyItemPrompt = () => {
 	inquirer.prompt ([
 	{
@@ -57,11 +76,11 @@ const buyItemPrompt = () => {
 			}
 			if (response.length === 0) {
 				console.log("Whoops, looks like you tried buying something that didn't exist! Please check your item ID.");
-				showInventory();
+				tryAgain();
 			} else {
 				let itemRes = response[0];
 				if (quantity <= itemRes.stock_quantity) {
-					console.log("Thank you for your purchase! Processing order now.");
+					// console.log("Thank you for your purchase! Processing order now.");
 
 					let updateString = "UPDATE products SET stock_quantity = " + (itemRes.stock_quantity - quantity) + " WHERE id = " + product;
 
@@ -81,7 +100,7 @@ const buyItemPrompt = () => {
 					console.log("Try buying something else!");
 					console.log(divider);
 
-					showInventory();
+					tryAgain();
 				}
 			}
 
