@@ -1,5 +1,5 @@
 //npm packages
-const inquirier = require("inquirer");
+const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const figlet = require("figlet");
 
@@ -49,13 +49,13 @@ const buyItemPrompt = () => {
 	{
 		type: "input",
 		name: "quantity",
-		message: "Please enter desired quantity for purchase."
+		message: "Please enter desired quantity for purchase.",
 		validate: inputValidation,
 		filter: Number
 	}
 
 		]).then( 
-		() => {
+		(input) => {
 		let product = input.product_id;
 		let quantity = input.quantity;
 
