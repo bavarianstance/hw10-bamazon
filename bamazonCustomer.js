@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const figlet = require("figlet");
+const Table = require ("cli-table");
 
 //divider global variable
 const divider = "\n------------------------------------------------------------\n\n";
@@ -128,14 +129,25 @@ const showInventory = () => {
 
 		let output = "";
 		for (let i = 0; i < response.length; i++){
-			output = "";
-			output += "Product ID: " + response[i].id + "  ||  ";
-			output += "Product Name: " + response[i].product_name + "  ||  ";
-			output += "Department Name: " + response[i].dept_name + "  ||  ";
-			output += "Price: $" + response[i].price + "  ||  ";
-			output += "Current Stock: " + response[i].stock_quantity + "\n"
+			let table = new Table ({
+				head: ["Product ID", "Product Name", "Dept. Name", "Price (USD)", "Quantity in Stock"],
+				colWidths: [100, 200]
+			});
+			table.push(
+				[response[i].id],
+				[response[i].product_name],
+				[response[i].dept_name],
+				[response[i].price],
+				[response[i].stock_quantity]
+				);
+			// output = "";
+			// output += "Product ID: " + response[i].id + "  ||  ";
+			// output += "Product Name: " + response[i].product_name + "  ||  ";
+			// output += "Department Name: " + response[i].dept_name + "  ||  ";
+			// output += "Price: $" + response[i].price + "  ||  ";
+			// output += "Current Stock: " + response[i].stock_quantity + "\n"
 
-		console.log(output);		
+		console.log(table.toString());		
 		}
 		console.log(divider);
 		buyItemPrompt();
