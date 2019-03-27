@@ -28,16 +28,6 @@ const inputValidation = (input) => {
 }
 
 const buyItemPrompt = () => {
-
-	figlet('Express Check Out', (err, data) => {
-    if (err) {
-        console.log('Something went wrong...');
-        console.dir(err);
-        return;
-    	}
-		console.log(data)
-});
-
 	inquirer.prompt ([
 	{
 		type: "input",
@@ -100,7 +90,7 @@ const buyItemPrompt = () => {
 }
 
 const showInventory = () => {
-	figlet('Inventory Status', (err, data) => {
+	figlet('BAMAZON !!!', (err, data) => {
     if (err) {
         console.log('Something went wrong...');
         console.dir(err);
@@ -123,7 +113,8 @@ const showInventory = () => {
 			output += "Product ID: " + response[i].id + "  ||  ";
 			output += "Product Name: " + response[i].product_name + "  ||  ";
 			output += "Department Name: " + response[i].dept_name + "  ||  ";
-			output += "Price: $" + response[i].price + "\n";
+			output += "Price: $" + response[i].price + "  ||  ";
+			output += "Current Stock: " + response[i].stock_quantity + "\n"
 
 		console.log(output);		
 		}
