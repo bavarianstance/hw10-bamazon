@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/bavarianstance/hw10-bamazon#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "figlet": "^1.2.1",
     "inquirer": "^6.2.2",
     "mysql": "^2.16.0"
-  }
+  },
+  "devDependencies": {}
 }

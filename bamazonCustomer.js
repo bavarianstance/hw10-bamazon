@@ -10,9 +10,7 @@ const divider = "\n------------------------------------------------------------\
 const connection = mysql.createConnection ({
 	host: "localhost",
 	port: 3306,
-
 	user: "root",
-
 	password: "iseeyoutoorsql",
 	database: "bamazon"
 });
@@ -126,19 +124,15 @@ const showInventory = () => {
 			throw err;
 		} 
 		console.log(divider);
-
-		let output = "";
-		for (let i = 0; i < response.length; i++){
 			let table = new Table ({
-				head: ["Product ID", "Product Name", "Dept. Name", "Price (USD)", "Quantity in Stock"],
-				colWidths: [100, 200]
+				head: ["ID", "Product", "Department", "Price (USD)", "Quantity Left"],
+				colWidths: [5, 25, 25, 15, 15]
 			});
+
+		for (let i = 0; i < response.length; i++){
 			table.push(
-				[response[i].id],
-				[response[i].product_name],
-				[response[i].dept_name],
-				[response[i].price],
-				[response[i].stock_quantity]
+				// ["first value", "second value", "third value", "fourth value", " fifth value"]
+				[response[i].id, response[i].product_name, response[i].dept_name, response[i].price, response[i].stock_quantity]
 				);
 			// output = "";
 			// output += "Product ID: " + response[i].id + "  ||  ";
@@ -146,9 +140,8 @@ const showInventory = () => {
 			// output += "Department Name: " + response[i].dept_name + "  ||  ";
 			// output += "Price: $" + response[i].price + "  ||  ";
 			// output += "Current Stock: " + response[i].stock_quantity + "\n"
-
-		console.log(table.toString());		
 		}
+		console.log(table.toString());		
 		console.log(divider);
 		buyItemPrompt();
 	})
