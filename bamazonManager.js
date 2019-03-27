@@ -15,21 +15,30 @@ const connection = mysql.createConnection ({
 	database: "bamazon"
 });
 
+const inputValidation = (input) => {
+	let int = Number.isInteger(parseFloat(input));
+	let sign = Math.sign(input);
+
+	if (int && (sign === 1)) {
+		return true;
+	} else {
+		return "Invalid input. Please enter positive whole numbers only.";
+	}
+}
+
+const positiveInput = (input) => {
+	let int = (typeof parseFloat (input)) === "number";
+	let positive = parseFloat(input) > 0;
+
+	if (int && positive){
+		return true;
+	} else {
+		return "Error. Input must be positive."
+	}
+}
+
 const mgrFunction = () => {
-	inquirer.prompt([
-{
-	type: "list",
-	name: "option",
-	message: "Choose a command to execute."
-	choices: ["View Products for Sale", "View Low Inventory Items", "Replenish Inventory", "Add New Product"],
-	
-}
-
-		])
-}
-
-const showInventory = () => {
-	figlet('BAMAZON !!!', (err, data) => {
+	figlet('MGR CTRL PANEL', (err, data) => {
     if (err) {
         console.log('Something went wrong...');
         console.dir(err);
@@ -37,6 +46,44 @@ const showInventory = () => {
     	}
 		console.log(data)
 });
+	inquirer.prompt([
+{
+	type: "list",
+	name: "choice",
+	message: "Choose a command to execute."
+	choices: ["View Products for Sale", "View Low Inventory Items", "Replenish Inventory", "Add New Product"],
+	filter: (value) => {
+		if (value === "View Products for Sale") {
+			return 'inventory';	
+	} else if (value === "View Low Inventory Items") {
+			return 'lowStock';		
+	} else if (value === "Replenish Inventory") {
+			return 'replenish';
+	} else if (value === "Add New Product") {
+			return 'addNew';	
+	} else {
+		console.log("Fatal error. Invalid operation.");
+		exit(1);
+	}
+  }
+}
+		]).then (input) => {
+		if (input.choice === "inventory") {
+			showInventory();
+		} else if (input.choice === "lowStock"){
+			showLowStock();
+		} else if (input.choice === "replenish") {
+			addStock();
+		} else if (input.choice === "addNew") {
+			addNewProduct();
+		} else {
+			console.log("Fatal error. Illegal operation.");
+			exit(1);
+		}
+	}
+
+const showInventory = () => {
+	console.log("--- Showing Current Inventory ---");
 
 	let showAll = "SELECT * FROM products";
 
@@ -61,3 +108,5 @@ const showInventory = () => {
 		console.log(divider);
 	})
 }
+
+mgrFunction();
