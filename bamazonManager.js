@@ -37,6 +37,25 @@ const positiveInput = (input) => {
 	}
 }
 
+const tryAgain = () => {
+	inquirer.prompt([
+{
+	type: "confirm",
+	message: "Would you like to perform another action?",
+	name: "confirm",
+	default: true
+}
+		]).then(
+		(inquirerResponse) => {
+			if (inquirerResponse.confirm) {
+			showInventory();
+			} else {
+				console.log("Goodbye!");
+				connection.end();
+			}
+		})
+}
+
 const mgrFunction = () => {
 	figlet('MGR CTRL PANEL', (err, data) => {
     if (err) {
@@ -67,7 +86,8 @@ const mgrFunction = () => {
 	}
   }
 }
-		]).then (input) => {
+		]).then( 
+		(input) => {
 		if (input.choice === "inventory") {
 			showInventory();
 		} else if (input.choice === "lowStock"){
@@ -80,7 +100,8 @@ const mgrFunction = () => {
 			console.log("Fatal error. Illegal operation.");
 			exit(1);
 		}
-	}
+	});
+}
 
 const showInventory = () => {
 	console.log("--- Showing Current Inventory ---");
@@ -106,7 +127,82 @@ const showInventory = () => {
 		}
 		console.log(table.toString());		
 		console.log(divider);
+		tryAgain();
 	})
+}
+
+const showLowStock = () => {
+	console.log("--- Showing Low Stock Items ---");
+
+	let showLow = "SELECT * FROM products WHERE stock_quantity < 25";
+	connection.query(showLow, (err, response) => {
+		if (err) {
+			throw err;
+		}
+		console.log(divider);
+		let table = new Table ({
+				head: ["ID", "Product", "Department", "Price (USD)", "Quantity Left"],
+				colWidths: [5, 25, 25, 15, 15]
+			});
+
+		for (let i = 0; i < response.length; i++){
+			table.push(
+				[response[i].id, response[i].product_name, response[i].dept_name, response[i].price, response[i].stock_quantity]
+				);
+	
+		}
+		console.log(table.toString());		
+		console.log(divider);
+		tryAgain();
+	})
+}
+
+const addStock = () => {
+	inquirer.prompt([
+	{
+		type: "input",
+		name: "product_id",
+		message: "Please select a product ID to replenish stock of.",
+		validate: inputValidation,
+		filter: Number
+	},
+	{
+		type: "input",
+		name: "quantity",
+		message: "Please enter number of new stock to replenish.",
+		validate: inputValidation,
+		filter: Number
+	}
+		]).then( 
+		(input) => {
+			let product = input.product_id;
+			let reStock = input.quantity;
+
+			let searchString = "SELCT * FROM products WHERE ?";
+
+			connection.query(searchString, {product_id:product}, (err, response) => {
+				if (err){
+					throw err;
+				} 
+				if (response.length === 0) {
+					console.log("Error. Please check your Product ID input.");
+					tryAgain();				
+				} else {
+					let itemRes = response[0];
+					console.log("--- Processing Inventory Update ---");
+					let updateString = "UPDATE products SET stock_quantity = " + (itemRes.stock_quantity + reStock) + " WHERE id =" + product;
+
+					connection.query(updateString, (err, response) => {
+						if (err) {
+							throw err;
+						} 
+					console.log("Product ID: " + product + " stock replenished. New stock count: " + (itemRes.stock_quantity +reStock));	
+					console.log(divider);
+					tryAgain();
+					})
+				}
+			})
+		});
 }
 
 mgrFunction();
