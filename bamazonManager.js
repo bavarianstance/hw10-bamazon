@@ -15,7 +15,18 @@ const connection = mysql.createConnection ({
 	database: "bamazon"
 });
 
-const mgrFunction
+const mgrFunction = () => {
+	inquirer.prompt([
+{
+	type: "list",
+	name: "option",
+	message: "Choose a command to execute."
+	choices: ["View Products for Sale", "View Low Inventory Items", "Replenish Inventory", "Add New Product"],
+	
+}
+
+		])
+}
 
 const showInventory = () => {
 	figlet('BAMAZON !!!', (err, data) => {
