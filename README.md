@@ -15,16 +15,20 @@
 ![edge-case-1](./imgs/customer_edgecase1.png "Edge Case 1")
 
 * Edge case 2 - invalid item ID.
+
 ![edge-case-2](./imgs/customer_edgecase2.png "Edge Case 2")
 
 * Edge case 3 - invalid quantity input.
+
 ![edge-case-3](./imgs/customer_edgecase3.png "Edge Case 3")
 
 * Successful purchase screen
+
 ![success-case](./imgs/customer_success.png "Success Case")
 
 ### Manager App Screenshots
 * Initial prompt - displays manager options.
+
 ![bamazon_mgr_init_screenshot](./imgs/mgr_initprompt.png "Bamazon Manager")
 
 * View Products - shows current inventory
@@ -34,9 +38,11 @@
 ![view-low-stock](./imgs/mgr_lowstock.png "Low Stock")
 
 * Replenish Stock - Add quantity to product by ID.
+
 ![replenish-stock](./imgs/mgr_replenishstock.png "Replenish Stock")
 
 * Add new product - create new product and specify attributes.
+
 ![add-new](./imgs/mgr_addnew.png "Add New Product")
 
 * Edge cases include negative/non whole number inputs for quantity, price, etc.
