@@ -1,7 +1,7 @@
 //npm packages
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
-const figlet = require("figlet");
+const Table = require ("cli-table");
 
 //divider global variable
 const divider = "\n------------------------------------------------------------\n\n";
@@ -47,7 +47,7 @@ const tryAgain = () => {
 		]).then(
 		(inquirerResponse) => {
 			if (inquirerResponse.confirm) {
-			showInventory();
+			mgrFunction();
 			} else {
 				console.log("Goodbye!");
 				connection.end();
@@ -56,19 +56,11 @@ const tryAgain = () => {
 }
 
 const mgrFunction = () => {
-	figlet('MGR CTRL PANEL', (err, data) => {
-    if (err) {
-        console.log('Something went wrong...');
-        console.dir(err);
-        return;
-    	}
-		console.log(data)
-});
 	inquirer.prompt([
 {
 	type: "list",
 	name: "choice",
-	message: "Choose a command to execute."
+	message: "Choose a command to execute.",
 	choices: ["View Products for Sale", "View Low Inventory Items", "Replenish Inventory", "Add New Product"],
 	filter: (value) => {
 		if (value === "View Products for Sale") {
@@ -177,9 +169,9 @@ const addStock = () => {
 			let product = input.product_id;
 			let reStock = input.quantity;
 
-			let searchString = "SELCT * FROM products WHERE ?";
+			let searchString = "SELECT * FROM products WHERE ?";
 
-			connection.query(searchString, {product_id:product}, (err, response) => {
+			connection.query(searchString, {id:product}, (err, response) => {
 				if (err){
 					throw err;
 				} 
@@ -195,7 +187,7 @@ const addStock = () => {
 						if (err) {
 							throw err;
 						} 
-					console.log("Product ID: " + product + " stock replenished. New stock count: " + (itemRes.stock_quantity +reStock));	
+					console.log("Product: " + itemRes.product_name + " restocked. New stock count: " + (itemRes.stock_quantity +reStock));	
 					console.log(divider);
 					tryAgain();
 					})
@@ -208,33 +200,33 @@ const addNewProduct = () => {
 	inquirer.prompt([
 {
 	type: "input",
-	name: "newName",
+	name: "product_name",
 	message: "Input new product name"
 },
 {
 	type: "input",
-	name: "newDept_name",
+	name: "dept_name",
 	message: "Please enter department name of new product"
 },
 {
 	type: "input",
-	name: "newPrice",
+	name: "price",
 	message: "Please enter price (USD) per unit of new product",
 	validate: positiveInput
 },
 {
 	type: "input",
-	name: "newStock",
+	name: "stock_quantity",
 	message: "Please enter current stock quantity.",
 	validate: inputValidation
 }
 
 		]).then ( 
 		(input) => {
-			console.log("Processing. \n New product: " + input.newName + divider +
-				"Department: " + input.newDept_name + divider +
-				"Price: " + input.newPrice + divider + 
-				"Quantity: " +input.newStock + divider);
+			console.log("Processing. \n New product: " + input.product_name + divider +
+				"Department: " + input.dept_name + divider +
+				"Price: " + input.price + divider + 
+				"Quantity: " +input.stock_quantity + divider);
 		let searchString = "INSERT INTO products SET ?";
 		
 		connection.query(searchString, input, (error, response) => {
@@ -242,7 +234,7 @@ const addNewProduct = () => {
 				throw error;
 			}
 
-			console.log("Processed. " + input.newName + " Sucessfully added.");
+			console.log("Processed. " + input.product_name + " Sucessfully added.");
 			console.log(divider);
 
 			tryAgain();
