@@ -2,7 +2,6 @@
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const figlet = require("figlet");
-const Table = require ("cli-table");
 
 //divider global variable
 const divider = "\n------------------------------------------------------------\n\n";
@@ -202,6 +201,52 @@ const addStock = () => {
 					})
 				}
 			})
+		});
+}
+
+const addNewProduct = () => {
+	inquirer.prompt([
+{
+	type: "input",
+	name: "newName",
+	message: "Input new product name"
+},
+{
+	type: "input",
+	name: "newDept_name",
+	message: "Please enter department name of new product"
+},
+{
+	type: "input",
+	name: "newPrice",
+	message: "Please enter price (USD) per unit of new product",
+	validate: positiveInput
+},
+{
+	type: "input",
+	name: "newStock",
+	message: "Please enter current stock quantity.",
+	validate: inputValidation
+}
+
+		]).then ( 
+		(input) => {
+			console.log("Processing. \n New product: " + input.newName + divider +
+				"Department: " + input.newDept_name + divider +
+				"Price: " + input.newPrice + divider + 
+				"Quantity: " +input.newStock + divider);
+		let searchString = "INSERT INTO products SET ?";
+		
+		connection.query(searchString, input, (error, response) => {
+			if (error) {
+				throw error;
+			}
+
+			console.log("Processed. " + input.newName + " Sucessfully added.");
+			console.log(divider);
+
+			tryAgain();
+			});	
 		});
 }
 
