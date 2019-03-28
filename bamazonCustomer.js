@@ -102,7 +102,7 @@ const buyItemPrompt = () => {
 						connection.end();
 					})
 				} else {
-					console.log("NO BAM! Looks like you're outta luck. Your desired product is outta stock. Or you're trying to buy too many.");
+					console.log("NO BAM! Looks like you're outta luck." + '\n' + "Insufficient quantity available.");
 					console.log("Try buying something else or readjusting quantity desired!");
 					console.log(divider);
 

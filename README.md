@@ -7,18 +7,39 @@
 * node bamazonManager.js --> run Manager Control Panel application
 * node bamazonCustomer.js --> run Customer Item Purchase application
 
-### Customer App 
+### Customer App Screenshots
 * Initial prompt - displays current inventory status and allows purchase of items by ID number.
 ![bamazon_customer_init_screenshot](./imgs/customer_initprompt.png "Bamazon Customer")
 
-* spotify-this --> searches Spotify for Song(s). Accepts search value(s) by song title and/or artist name.
-![spotify-this-screenshot](./imgs/song.png "Spotify This")
+* Edge case 1 - attempt to purchase items out of stock or more than quantity available.
+![edge-case-1](./imgs/customer_edgecase1.png "Edge Case 1")
 
-* movie-this --> searches OMDB for movie(s). Accepts search value(s) by movie title.
-![movie-this-screenshot](./imgs/movie.png "Movie This")
+* Edge case 2 - invalid item ID.
+![edge-case-2](./imgs/customer_edgecase2.png "Edge Case 2")
 
-* random-[input] --> searches via random-[input].txt for random [input] to display. Valid inputs include song, movie or concert. 
+* Edge case 3 - invalid quantity input.
+![edge-case-3](./imgs/customer_edgecase3.png "Edge Case 3")
 
+* Successful purchase screen
+![success-case](./imgs/customer_success.png "Success Case")
+
+### Manager App Screenshots
+* Initial prompt - displays manager options.
+![bamazon_mgr_init_screenshot](./imgs/mgr_initprompt.png "Bamazon Manager")
+
+* View Products - shows current inventory
+![view-products](./imgs/mgr_currentstock.png "View Products")
+
+* View Low Stock Products - shows low stock items.
+![view-low-stock](./imgs/mgr_lowstock.png "Low Stock")
+
+* Replenish Stock - Add quantity to product by ID.
+![replenish-stock](./imgs/mgr_replenishstock.png "Replenish Stock")
+
+* Add new product - create new product and specify attributes.
+![add-new](./imgs/mgr_addnew.png "Add New Product")
+
+* Edge cases include negative/non whole number inputs for quantity, price, etc.
 
 ### Technologies Used
 * Node.JS 
