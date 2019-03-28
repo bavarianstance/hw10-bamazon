@@ -6,6 +6,7 @@ const Table = require ("cli-table");
 //divider global variable
 const divider = "\n------------------------------------------------------------\n\n";
 
+//init SQL DB connection
 const connection = mysql.createConnection ({
 	host: "localhost",
 	port: 3306,
@@ -14,6 +15,7 @@ const connection = mysql.createConnection ({
 	database: "bamazon"
 });
 
+//input validation function for whole integers
 const inputValidation = (input) => {
 	let int = Number.isInteger(parseFloat(input));
 	let sign = Math.sign(input);
@@ -25,6 +27,7 @@ const inputValidation = (input) => {
 	}
 }
 
+//input validation function for positive numbers only
 const positiveInput = (input) => {
 	let int = (typeof parseFloat (input)) === "number";
 	let positive = parseFloat(input) > 0;
@@ -35,7 +38,7 @@ const positiveInput = (input) => {
 		return "Error. Input must be positive."
 	}
 }
-
+//reinit function to perform another action
 const tryAgain = () => {
 	inquirer.prompt([
 {
@@ -55,6 +58,7 @@ const tryAgain = () => {
 		})
 }
 
+//init primary selection function for commands
 const mgrFunction = () => {
 	inquirer.prompt([
 {
@@ -93,7 +97,7 @@ const mgrFunction = () => {
 		}
 	});
 }
-
+//show current stock status function
 const showInventory = () => {
 	console.log("--- Showing Current Inventory ---");
 
@@ -104,6 +108,7 @@ const showInventory = () => {
 			throw err;
 		} 
 		console.log(divider);
+		//init new table via CLI module
 			let table = new Table ({
 				head: ["ID", "Product", "Department", "Price (USD)", "Quantity Left"],
 				colWidths: [5, 25, 25, 15, 15]
@@ -122,6 +127,7 @@ const showInventory = () => {
 	})
 }
 
+//lowstock function
 const showLowStock = () => {
 	console.log("--- Showing Low Stock Items ---");
 
@@ -147,7 +153,7 @@ const showLowStock = () => {
 		tryAgain();
 	})
 }
-
+// replenish stock function
 const addStock = () => {
 	inquirer.prompt([
 	{
@@ -195,7 +201,7 @@ const addStock = () => {
 			})
 		});
 }
-
+//add new product function
 const addNewProduct = () => {
 	inquirer.prompt([
 {
@@ -241,5 +247,5 @@ const addNewProduct = () => {
 			});	
 		});
 }
-
+//init app
 mgrFunction();

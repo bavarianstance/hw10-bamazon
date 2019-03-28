@@ -1,9 +1,11 @@
 -- Drops the bamazon db if it exists currently --
 DROP DATABASE IF EXISTS bamazon
+-- Create DB  
 CREATE DATABASE bamazon;
-
+-- Specify to Use DB
 USE bamazon;
 
+-- Create table and define columns
 CREATE TABLE products (
   id INTEGER(11) AUTO_INCREMENT NOT NULL,
   product_name VARCHAR(50) NOT NULL,
@@ -13,6 +15,7 @@ CREATE TABLE products (
   PRIMARY KEY (id)
 );
 
+-- Sample Data Insertion
 INSERT INTO products (product_name, dept_name, price, stock_quantity)
 VALUES ("Instant Pot", "Appliances", 88.88, 50);
 
